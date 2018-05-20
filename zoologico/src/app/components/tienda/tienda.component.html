@@ -1,0 +1,24 @@
+ Padre:
+<h1>{{titulo}}</h1>
+<ul>
+    <li>Camiseta roja</li>
+    <li>Gorra negra</li>
+</ul>
+Nombre del parque:
+<input type="text" [(ngModel)]="nombreDelParque" (keyup)="mostrarNombre()"/>
+<p>Resultado: {{nombreDelParque}} </p>
+<div  *ngIf="miParque">
+    <h4>Datos de mi parque desde el HIJO</h4>
+    <ol>
+        <li>{{miParque.titulo}}</li>
+        <li>{{miParque.metros}}</li>
+        <li>{{miParque.vegetacion}}</li>
+        <li>{{miParque.abierto}}</li>
+    </ol>
+</div>
+<hr>
+<p *ngIf="nombreDelParque">
+    Hijo:
+    <parques [titulo]= "nombreDelParque"
+            (pasameLosDatos)="verDatosParque($event)"></parques>
+</p>
