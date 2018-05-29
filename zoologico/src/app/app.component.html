@@ -4,5 +4,10 @@
 <a [routerLink]="['/cuidadores']">Cuidadores</a>
 <a [routerLink]="['/tienda']">Tienda</a>
 <a [routerLink]="['/contacto']">contacto</a>
+
+<span *ngIf="emailContacto"><strong>
+    Email: </strong>{{emailContacto}}
+    <button (click)="eliminarEmail()">Eliminar email</button>
+</span>
 <hr>
 <router-outlet></router-outlet>

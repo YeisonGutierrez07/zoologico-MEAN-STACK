@@ -1,10 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, DoCheck } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements DoCheck {
   title = 'TITULO DE LA APP';
+  public emailContacto: string;
+  ngDoCheck() {
+    this.emailContacto = localStorage.getItem('emailContacto');
+  }
+
+  eliminarEmail() {
+    localStorage.removeItem('emailContacto');
+    localStorage.clear();
+    this.emailContacto = null;
+  }
 }
