@@ -6,7 +6,7 @@ import { Component, DoCheck } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements DoCheck {
-  title = 'TITULO DE LA APP';
+  title = 'NGZOO';
   public emailContacto: string;
   ngDoCheck() {
     this.emailContacto = localStorage.getItem('emailContacto');
