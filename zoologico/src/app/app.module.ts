@@ -4,6 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import {routing, appRoutingProviders} from './app.routing';
 
+// IMPORTAR NUESTRO NUEVO MODULO
+import { ModuloEmailModule } from './moduloEmail/moduloEmail.module';
+
 // COMPONENTES
 import { TiendaComponent } from './components/tienda/tienda.component';
 import { ParquesComponent } from './components/parques/parques.component';
@@ -26,7 +29,8 @@ import { HomeComponent } from './components/home/home.component';
     BrowserModule,
     FormsModule,
     HttpModule,
-    routing
+    routing,
+    ModuloEmailModule
   ],
   providers: [
     appRoutingProviders

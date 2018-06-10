@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
     templateUrl: './tienda.component.html',
     styleUrls: ['./tienda.component.css']
 })
-export class TiendaComponent {
+export class TiendaComponent{
     public titulo;
     public nombreDelParque: string;
     public miParque;
