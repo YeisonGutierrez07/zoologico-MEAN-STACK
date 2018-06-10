@@ -6,6 +6,7 @@ import {routing, appRoutingProviders} from './app.routing';
 
 // IMPORTAR NUESTRO NUEVO MODULO
 import { ModuloEmailModule } from './moduloEmail/moduloEmail.module';
+import { AdminModule } from './admin/admin.module';
 
 // COMPONENTES
 import { TiendaComponent } from './components/tienda/tienda.component';
@@ -30,7 +31,8 @@ import { HomeComponent } from './components/home/home.component';
     FormsModule,
     HttpModule,
     routing,
-    ModuloEmailModule
+    ModuloEmailModule,
+    AdminModule
   ],
   providers: [
     appRoutingProviders
