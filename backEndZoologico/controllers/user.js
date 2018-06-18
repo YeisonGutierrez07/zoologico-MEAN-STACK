@@ -5,6 +5,9 @@ var bcrypt = require('bcrypt-nodejs');
 // modulos
 var User = require('../models/user');
 
+// Servicios
+var jwt = require('../services/jwt');
+
 function pruebas (req, res) {
     res.status(200).send({
         message: 'Probando el controlador de pruebas'
@@ -65,7 +68,49 @@ function saveUser(req, res) {
     }
 }
 
+function loggin(req, res) {
+    
+    var params = req.body;
+    var email = params.email;
+    var password = params.password;
+
+    User.findOne({email: email.toLowerCase()}, (err, userDB) => {
+        if (err) {
+            res.status(500).send({ message: "Error al comprobar que el usuario exista"})
+        } else {
+            if (userDB) {
+                bcrypt.compare(password, userDB.password, (err, check) => {
+                    if (check) {
+                        //Comprobar y generar token
+                        if (params.getToken) {
+                            //devolver token 
+                            res.status(200).send({
+                                token: jwt.createToken(userDB)
+                            })
+
+                        } else {
+                            res.status(200).send({userDB})
+                        }
+                    } else {
+                        res.status(200).send({
+                            message: "El usuario no ha podido loggearse correctamente"
+                        })
+                    }
+                });
+            } else {
+                res.status(200).send({
+                    message: "El usuario no existe"
+                })
+            }
+        }
+    })
+
+
+    
+}
+
 module.exports = {
     pruebas,
-    saveUser
+    saveUser,
+    loggin
 };
