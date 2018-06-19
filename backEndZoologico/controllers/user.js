@@ -4,6 +4,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 // modulos
 var User = require('../models/user');
+var fs = require('fs');
 
 // Servicios
 var jwt = require('../services/jwt');
@@ -69,11 +70,10 @@ function saveUser(req, res) {
 }
 
 function loggin(req, res) {
-    
     var params = req.body;
     var email = params.email;
     var password = params.password;
-
+    console.log(password);
     User.findOne({email: email.toLowerCase()}, (err, userDB) => {
         if (err) {
             res.status(500).send({ message: "Error al comprobar que el usuario exista"})
@@ -104,13 +104,82 @@ function loggin(req, res) {
             }
         }
     })
+}
+
+function updateUser (req, res) {
+    var userId = req.params.id;
+    var update = req.body;
+
+    console.log(update);
+
+    if (userId != req.user.sub) {
+        res.status(500).send({ message: 'No tienes permisos'});
+    }
+    User.findByIdAndUpdate(userId, update, { new: true}, (err, userUpdate) => {
+        if (err) {
+            res.status(500).send({ message: 'NO SE PUDIERON ACTUALIZAR LOS DATOS'});
+        } else {
+            if (!userUpdate) {
+                res.status(404).send({ message: "NO SE ACTUALIZARON LOS DATOS"});
+            } else {
+                res.status(200).send({
+                    message: "LOS DATOS SE ACTUALIZARON CORRECTAMENTE",
+                    user: userUpdate
+                })
+            }
+        }
+    });
+}
+
+function uploadImage (req, res) {
+    var userId = req.params.id;
+    var file_name = 'No subido...';
 
 
-    
+    console.log(req);
+    if (req.files) {
+        var file_path = req.files.image.path;
+        var file_split = file_path.split('\\');
+        var file_name = file_split[2];
+        var ext_split = file_name.split('\.');
+        var file_ext = ext_split[1];
+        if (file_ext === 'png' || file_ext === 'jpg' || file_ext === 'jpeg' || file_ext === 'gif') {
+            if (userId != req.user.sub) {
+                res.status(500).send({ message: 'No tienes permisos'});
+            }
+            User.findByIdAndUpdate(userId, {image: file_name}, { new: true}, (err, userUpdate) => {
+                if (err) {
+                    res.status(500).send({ message: 'NO SE PUDIERON ACTUALIZAR LOS DATOS'});
+                } else {
+                    if (!userUpdate) {
+                        res.status(404).send({ message: "NO SE ACTUALIZARON LOS DATOS"});
+                    } else {
+                        res.status(200).send({
+                            message: "LOS DATOS SE ACTUALIZARON CORRECTAMENTE",
+                            user: userUpdate,
+                            image: file_name
+                        })
+                    }
+                }
+            });
+        } else {
+            fs.unlink(file_path, (err) => {
+                if(err) {
+                    res.status(200).send({ message: "LA EXTENCION NO ES VALIDA Y FICHERO NO BORRADO"});
+                } else {
+                    res.status(200).send({ message: "LA EXTENCION NO ES VALIDA"});
+                }
+            })
+        }
+    } else {
+        res.status(200).send({ message: "NO SE HAN SUBIDO ARCIVOS"});
+    }
 }
 
 module.exports = {
     pruebas,
     saveUser,
-    loggin
+    loggin,
+    updateUser,
+    uploadImage
 };
