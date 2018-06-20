@@ -5,6 +5,7 @@ var bcrypt = require('bcrypt-nodejs');
 // modulos
 var User = require('../models/user');
 var fs = require('fs');
+var pathFile = require('path');
 
 // Servicios
 var jwt = require('../services/jwt');
@@ -135,8 +136,6 @@ function uploadImage (req, res) {
     var userId = req.params.id;
     var file_name = 'No subido...';
 
-
-    console.log(req);
     if (req.files) {
         var file_path = req.files.image.path;
         var file_split = file_path.split('\\');
@@ -176,10 +175,40 @@ function uploadImage (req, res) {
     }
 }
 
+function getImageFile(req, res) {
+    var imageFile = req.params.imageFile;
+    var path_file = './uploads/users/' + imageFile;
+
+    fs.exists(path_file, (exist) => {
+        if (exist) {
+            res.sendFile(pathFile.resolve(path_file));
+        } else {
+            res.status(404).send({ message: "LA IMAGEN NO EXISTE"})
+        }
+    })
+
+}
+
+function getKeepers(req, res) {
+    User.find({rol: 'ROLE_ADMIN'}).exec((err, users) => {
+        if (err) {
+            res.status(500).send({message:"ERROR DE SERVIDOR"})
+        } else {
+            if (users) {
+                res.status(200).send({users})
+            } else {
+                res.status(404).send({message:"NO HAY CUIDADORES"})
+            }
+        }
+    })
+}
+
 module.exports = {
     pruebas,
     saveUser,
     loggin,
     updateUser,
-    uploadImage
+    uploadImage,
+    getImageFile,
+    getKeepers
 };
