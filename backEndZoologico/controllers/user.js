@@ -23,9 +23,6 @@ function saveUser(req, res) {
 
     // Recoger parametros de la peticion
     var params = req.body;
-
-    console.log(params);
-
     // ASIGNAR VALORES AL OBJETO DE USUARIOS
     if (params.password && params.name && params.surname) {
         user.name = params.name;
