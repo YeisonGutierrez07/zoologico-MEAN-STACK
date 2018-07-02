@@ -5,6 +5,7 @@ var AnimalsController = require('../controllers/animal');
 
 var api = express.Router();
 var dmAuth = require('../middlewares/authenticated');
+var mdAdmin = require('../middlewares/isAdmin');
 
 var multipart = require('connect-multiparty');
 var mdUpload = multipart({ uploadDir: './uploads/animals'})
@@ -16,11 +17,13 @@ api.get('/getAnimalById/:idAnimal', dmAuth.ensreAuth, AnimalsController.getAnima
 api.get('/getImageFileAnimal/:imageFile', dmAuth.ensreAuth, AnimalsController.getImageFile);
 
 //POST
-api.post('/saveAnimal', dmAuth.ensreAuth, AnimalsController.saveAnimal);
+api.post('/saveAnimal', [dmAuth.ensreAuth, mdAdmin.isAdmin], AnimalsController.saveAnimal);
 api.post('/uploadImageAnimal/:id', [dmAuth.ensreAuth, mdUpload], AnimalsController.uploadImageAnimal);
 
 //PUT
+api.put('/updateAnimal/:idAnimal', [dmAuth.ensreAuth, mdAdmin.isAdmin], AnimalsController.updateAnimal);
 
-api.put('/updateAnimal/:idAnimal', dmAuth.ensreAuth, AnimalsController.updateAnimal);
+//DELETE
+api.delete('/deleteAnimal/:idAnimal', [dmAuth.ensreAuth, mdAdmin.isAdmin], AnimalsController.deleteAnimal);
 
 module.exports = api;

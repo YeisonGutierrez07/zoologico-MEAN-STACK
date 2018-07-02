@@ -6,5 +6,4 @@ import { Component, DoCheck } from '@angular/core';
 })
 export class MainComponent {
   title = 'Panel de administracion';
-  console.log("OK LOKA")
 }

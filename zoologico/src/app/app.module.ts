@@ -16,6 +16,8 @@ import { ContactComponent } from './components/contact/contact.component';
 import { KeepersComponent } from './components/keeper/keeper.component';
 import { AnimalsComponent } from './components/animals/animals.component';
 import { HomeComponent } from './components/home/home.component';
+import { LogginComponent } from './components/loggin/loggin.component';
+import { RegisterComponent } from './components/register/register.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -24,7 +26,9 @@ import { HomeComponent } from './components/home/home.component';
     ContactComponent,
     KeepersComponent,
     AnimalsComponent,
-    HomeComponent
+    HomeComponent,
+    LogginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
